@@ -15,31 +15,31 @@ using token = expr::ExprParser::token; // typedef to make return token::PLUS etc
 
 /* ============================================================================================================= */
 
-dseq			([[:digit:]]+)
-dseq_opt		({dseq}?)
-frac			(({dseq_opt}"."{dseq})|{dseq}".")
-exp				([eE][-+]?{dseq})
-exp_opt			({exp}?)
+dseq            ([[:digit:]]+)
+dseq_opt        ({dseq}?)
+frac            (({dseq_opt}"."{dseq})|{dseq}".")
+exp             ([eE][-+]?{dseq})
+exp_opt         ({exp}?)
 
-integer			({dseq})
+integer         ({dseq})
 
 %%
 %{
-				// executed at the beginning of yylex
-				yylval = lval;
+                // executed at the beginning of yylex
+                yylval = lval;
 %}
 
-{integer}		yylval->emplace<long long>(strtoll(YYText(), nullptr, 10)); return ExprParser::token::INT;
-"+"				return token::PLUS;
-"-"				return token::MINUS;
-"*"				return token::MULTIPLY;
-"/"				return token::DIVIDE;
-"%"				return token::MODULO;
-"("				return token::LPAREN;
-")"				return token::RPAREN;
-\n				return token::EOL;
-<<EOF>>			return token::YYEOF;
-.				/* no action on unmatched input */
+{integer}       yylval->emplace<long long>(strtoll(YYText(), nullptr, 10)); return ExprParser::token::INT;
+"+"             return token::PLUS;
+"-"             return token::MINUS;
+"*"             return token::MULTIPLY;
+"/"             return token::DIVIDE;
+"%"             return token::MODULO;
+"("             return token::LPAREN;
+")"             return token::RPAREN;
+\n              return token::EOL;
+<<EOF>>         return token::YYEOF;
+.               /* no action on unmatched input */
 
 %%
 
